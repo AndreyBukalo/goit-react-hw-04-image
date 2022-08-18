@@ -1,12 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { ListItem, Image } from './ImageGalleryItem.styled';
 
 
-export const ImageGalleryItem = ({ id, webformatURL,  tags }) => {
+export const ImageGalleryItem = ({ largeImageURL, webformatURL,  tags, onCLick }) => {
   return (
-    <li key={id}>
-      <img src={webformatURL} alt={tags} />
-    </li>
+    <ListItem>
+      <Image src={webformatURL} alt={tags} />
+    </ListItem>
   );
 };
 

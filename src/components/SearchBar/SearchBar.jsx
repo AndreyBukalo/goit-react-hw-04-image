@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import {Form , Input , Button} from "./SearchBar.styled"
 
 export class SearchBar extends Component {
   state = {
@@ -12,7 +13,6 @@ export class SearchBar extends Component {
   onSubmit = event => {
     event.preventDefault();
     if (this.state.search.trim() === '') {
-     
       return;
     }
     this.props.onSubmit(this.state.search);
@@ -22,8 +22,8 @@ export class SearchBar extends Component {
   render() {
     return (
       <header>
-        <form onSubmit={this.onSubmit}>
-          <input
+        <Form onSubmit={this.onSubmit}>
+          <Input
             onChange={this.onChange}
             value={this.state.search}
             name="search"
@@ -32,10 +32,10 @@ export class SearchBar extends Component {
             autoFocus
             placeholder="Search images and photos"
           />{' '}
-          <button type="submit">
+          <Button type="submit">
             <span>Search</span>
-          </button>
-        </form>
+          </Button>
+        </Form>
       </header>
     );
   }
