@@ -6,6 +6,7 @@ import { Box } from './Box';
 import { SearchBar } from './SearchBar/SearchBar';
 import { fetchImages } from './api/ImageAPI';
 import { ImageGallery } from './ImageGallery/ImageGallery';
+import { MoreButton } from './Button/Button';
 
 export class App extends Component {
   state = {
@@ -13,7 +14,7 @@ export class App extends Component {
     search: '',
     page: 1,
     isLoading: false,
-    error:null,
+    error: null,
   };
 
   componentDidUpdate(_, prevState) {
@@ -83,14 +84,24 @@ export class App extends Component {
   };
 
   render() {
+    const { images,total} = this.state
+     const isLastPage = images.length === total;
+     const loadBtn = images.length !== 0 && !isLastPage;
+
     return (
-      <Box  listStyle="none" 
+      <Box
+        listStyle="none"
         display="flex"
         flexDirection="column"
-  >
+        alignItems="center"
+      >
         <SearchBar onSubmit={this.searchQuery} />
-        <ImageGallery images={this.state.images} />
-        {/* <button type="button" onClick={this.onLoadMore}></button> */}
+        <ImageGallery images={images} />
+        {loadBtn && (
+          <MoreButton type="button" onClick={this.onLoadMore}>
+            Load More
+          </MoreButton>
+        )}
         <ToastContainer />
       </Box>
     );
