@@ -7,12 +7,14 @@ import { SearchBar } from './SearchBar/SearchBar';
 import { fetchImages } from './api/ImageAPI';
 import { ImageGallery } from './ImageGallery/ImageGallery';
 import { MoreButton } from './Button/Button';
+import { Modal } from './Modal/Modal';
 
 export class App extends Component {
   state = {
     images: [],
     search: '',
     page: 1,
+    largeImage: '',
     isLoading: false,
     error: null,
   };
@@ -26,6 +28,17 @@ export class App extends Component {
       this.fetchData();
     }
   }
+  onOpenModal = url => {
+    this.setState({
+      largeImage: url,
+    });
+  };
+
+  onModalClose = () => {
+    this.setState({
+      largeImage: '',
+    });
+  };
 
   fetchData = () => {
     const { search, page } = this.state;
@@ -61,7 +74,7 @@ export class App extends Component {
         }));
       })
       .catch(error => this.setState({ error }))
-      .finally(() => this.setState({ isLoading: false }));;
+      .finally(() => this.setState({ isLoading: false }));
   };
 
   searchQuery = searchInput => {
@@ -72,7 +85,7 @@ export class App extends Component {
       images: [],
       page: 1,
       search: searchInput,
-      error:null,
+      error: null,
     });
   };
 
@@ -84,9 +97,9 @@ export class App extends Component {
   };
 
   render() {
-    const { images,total} = this.state
-     const isLastPage = images.length === total;
-     const loadBtn = images.length !== 0 && !isLastPage;
+    const { images, total, largeImage } = this.state;
+    const isLastPage = images.length === total;
+    const loadBtn = images.length !== 0 && !isLastPage;
 
     return (
       <Box
@@ -96,11 +109,14 @@ export class App extends Component {
         alignItems="center"
       >
         <SearchBar onSubmit={this.searchQuery} />
-        <ImageGallery images={images} />
+        <ImageGallery images={images} onClick={this.onOpenModal} />
         {loadBtn && (
           <MoreButton type="button" onClick={this.onLoadMore}>
             Load More
           </MoreButton>
+        )}
+        {largeImage && (
+          <Modal closeModal={this.onModalClose} url={largeImage} />
         )}
         <ToastContainer />
       </Box>
