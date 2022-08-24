@@ -2,7 +2,6 @@ import styled from '@emotion/styled';
 import { BiSearchAlt } from 'react-icons/bi';
 
 export const Header = styled.header`
-  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -12,6 +11,7 @@ export const Header = styled.header`
   border-bottom: 4px solid RGBA(0, 8, 0, 0.1);
 `;
 export const Form = styled.form`
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -21,7 +21,6 @@ export const Form = styled.form`
 `;
 
 export const Input = styled.input`
-
   margin-right: 5px;
   border: 1px solid RGBA(255, 255, 0, 0.08);
   border-radius: 4px;
@@ -43,9 +42,9 @@ export const Icon = styled(BiSearchAlt)`
   fill: RGBA(0, 8, 0, 0.68);
 `;
 export const Button = styled.button`
-position:absolute;
-top:22%;
-left:57%;
+  position: absolute;
+  top: 24%;
+  left: 85%;
   transform: scale(1);
   transition: transform 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   border: none;

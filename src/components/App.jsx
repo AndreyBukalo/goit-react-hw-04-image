@@ -1,13 +1,15 @@
 import React, { Component } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
+import Spinner from './Spinner/Spinner';
 import { Box } from './Box';
 import { SearchBar } from './SearchBar/SearchBar';
 import { fetchImages } from './api/ImageAPI';
 import { ImageGallery } from './ImageGallery/ImageGallery';
 import { MoreButton } from './Button/Button';
 import { Modal } from './Modal/Modal';
+
+
 
 export class App extends Component {
   state = {
@@ -20,12 +22,29 @@ export class App extends Component {
   };
 
   componentDidUpdate(_, prevState) {
-    const prevSearch = prevState.search;
-    const nextSearch = this.state.search;
-    const { page } = this.state;
-
-    if (prevSearch !== nextSearch || (prevState.page !== page && page !== 1)) {
-      this.fetchData();
+    const { page, search } = this.state;
+    const perPage = 12;
+    if (prevState.page !== page || prevState.search !== search) {
+      this.setState({ isLoading: true });
+      fetchImages(search, page, perPage)
+        .then(({ hits, totalHits }) => {
+          const totalPages = totalHits / perPage;
+          if (totalHits === 0) {
+            return toast.error('Sorry, no images found. Please, try again!');
+          }
+          if (page === 1) {
+            toast.success(`Hooray! We found ${totalHits} images.`);
+          }
+          if (page > totalPages) {
+            toast.info("You've reached the end of search results.");
+          }
+          this.setState(({ images }) => ({
+            images: [...images, ...hits],
+            total: totalHits,
+            isLoading: false,
+          }));
+        })
+        .catch(error => this.setState({ error }));
     }
   }
   onOpenModal = url => {
@@ -38,43 +57,6 @@ export class App extends Component {
     this.setState({
       largeImage: '',
     });
-  };
-
-  fetchData = () => {
-    const { search, page } = this.state;
-    const perPage = 12;
-    this.setState({ isLoading: true });
-    fetchImages(search, page, perPage)
-      .then(({ hits, totalHits }) => {
-        const totalPages = Math.ceil(totalHits / perPage);
-
-        if (hits.length === 0) {
-          return toast.error('Sorry, no images found. Please, try again!');
-        }
-
-        if (page === 1) {
-          toast.success(`Hooray! We found ${totalHits} images.`);
-        }
-
-        if (page === totalPages) {
-          toast.info("You've reached the end of search results.");
-        }
-
-        const data = hits.map(({ id, webformatURL, largeImageURL, tags }) => {
-          return {
-            id,
-            webformatURL,
-            largeImageURL,
-            tags,
-          };
-        });
-        this.setState(({ images }) => ({
-          images: [...images, ...data],
-          total: totalHits,
-        }));
-      })
-      .catch(error => this.setState({ error }))
-      .finally(() => this.setState({ isLoading: false }));
   };
 
   searchQuery = searchInput => {
@@ -97,7 +79,7 @@ export class App extends Component {
   };
 
   render() {
-    const { images, total, largeImage } = this.state;
+    const { images, total, largeImage, isLoading } = this.state;
     const isLastPage = images.length === total;
     const loadBtn = images.length !== 0 && !isLastPage;
 
@@ -118,6 +100,7 @@ export class App extends Component {
         {largeImage && (
           <Modal closeModal={this.onModalClose} url={largeImage} />
         )}
+        {isLoading && <Spinner />}
         <ToastContainer />
       </Box>
     );

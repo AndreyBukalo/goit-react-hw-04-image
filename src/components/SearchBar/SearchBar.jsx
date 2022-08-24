@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { ToastContainer, toast } from 'react-toastify';
 import { Form, Input, Button, Header ,Icon} from "./SearchBar.styled"
 
 
@@ -14,7 +15,8 @@ export class SearchBar extends Component {
   onSubmit = event => {
     event.preventDefault();
     if (this.state.search.trim() === '') {
-      return;
+     return toast.error('Sorry, no empty search');
+   
     }
     this.props.onSubmit(this.state.search);
     this.setState({ search: '' });
