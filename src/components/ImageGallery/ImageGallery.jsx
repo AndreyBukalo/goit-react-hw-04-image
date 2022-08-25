@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { ImageGalleryItem } from '../ImageGalleryItem/ImageGalleryItem';
 import { List } from './ImageGallery.styled';
 
-
 export const ImageGallery = ({ images, onClick }) => {
   return (
     <List>
@@ -20,12 +19,13 @@ export const ImageGallery = ({ images, onClick }) => {
   );
 };
 
-// FriendList.propTypes = {
-//   friends: PropTypes.arrayOf(
-//     PropTypes.shape({
-//       avatar: PropTypes.string.isRequired,
-//       name: PropTypes.string.isRequired,
-//       id: PropTypes.number.isRequired,
-//     })
-//   ),
-// };
+ImageGallery.propTypes = {
+  images: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      webformatURL: PropTypes.string,
+      largeImageURL: PropTypes.string,
+      tags: PropTypes.string,
+    })
+  ),
+};

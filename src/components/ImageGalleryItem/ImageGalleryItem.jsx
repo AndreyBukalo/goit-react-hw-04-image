@@ -1,9 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { ListItem, Image } from './ImageGalleryItem.styled'
+import { ListItem, Image } from './ImageGalleryItem.styled';
 
-
-export const ImageGalleryItem = ({ largeImageURL, webformatURL, tags, onClick }) => {
+export const ImageGalleryItem = ({
+  largeImageURL,
+  webformatURL,
+  tags,
+  onClick,
+}) => {
   return (
     <ListItem>
       <Image
@@ -15,10 +19,9 @@ export const ImageGalleryItem = ({ largeImageURL, webformatURL, tags, onClick })
   );
 };
 
-// FriendListItem.propTypes = {
-//   friends: PropTypes.shape({
-//     avatar: PropTypes.string.isRequired,
-//     name: PropTypes.string.isRequired,
-//     id: PropTypes.number.isRequired,
-//   }),
-// };
+ImageGalleryItem.propTypes = {
+  webformatURL: PropTypes.string,
+  largeImageURL: PropTypes.string,
+  tags: PropTypes.string,
+  onClick: PropTypes.func.isRequired
+};
