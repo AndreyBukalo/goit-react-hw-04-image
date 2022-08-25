@@ -81,8 +81,7 @@ export class App extends Component {
 
   render() {
     const { images, total, largeImage, isLoading } = this.state;
-    const isLastPage = images.length === total;
-    const loadBtn = images.length !== 0 && !isLastPage;
+
 
     return (
       <Box
@@ -92,11 +91,15 @@ export class App extends Component {
         alignItems="center"
       >
         <SearchBar onSubmit={this.searchQuery} />
-        <ImageGallery images={images} onClick={this.onOpenModal} />
-        {loadBtn && (
-          <MoreButton type="button" onClick={this.onLoadMore}>
-            Load More
-          </MoreButton>
+        {images.length > 0 && (
+          <>
+            <ImageGallery images={images} onClick={this.onOpenModal} />
+            {total !== images.length && (
+              <MoreButton type="button" onClick={this.onLoadMore}>
+                Load More
+              </MoreButton>
+            )}
+          </>
         )}
         {largeImage && (
           <Modal closeModal={this.onModalClose} url={largeImage} />
