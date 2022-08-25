@@ -30,6 +30,7 @@ export class App extends Component {
         .then(({ hits, totalHits }) => {
           const totalPages = totalHits / perPage;
           if (totalHits === 0) {
+             this.setState({ isLoading: false });
             return toast.error('Sorry, no images found. Please, try again!');
           }
           if (page === 1) {
