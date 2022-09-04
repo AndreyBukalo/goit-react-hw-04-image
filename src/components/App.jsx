@@ -57,6 +57,7 @@ export const App = () => {
     }
     setImages([]);
     setSearch(searchInput);
+    setPage(1);
   };
 
   const onLoadMore = () => {
